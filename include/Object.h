@@ -24,6 +24,8 @@ class Object{
     float GetMass();
     Vector2f GetPos();
     Vector2f GetVelocity();
+    Vector2f GetAcc();
+    Vector2f GetForce();
     int GetID();
     float* GetTraceX();
     float* GetTraceY();

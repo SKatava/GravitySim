@@ -96,6 +96,14 @@ Vector2f Object::GetVelocity(){
     return m_velocity;
 }
 
+Vector2f Object::GetAcc(){
+    return m_acc;
+}
+
+Vector2f Object::GetForce(){
+    return m_force;
+}
+
 int Object::GetID(){
     return m_ID;
 }

@@ -47,7 +47,7 @@ void GUI::Draw(){
     ObjectCreator();
     ImGui::SameLine();
     TimeInfo();
-    //ClearButton();
+    ClearButton();
     ImGui::End();
 	ImGui::Render(); 
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -58,6 +58,16 @@ void GUI::InfoGraphics(){
     PositionPlot();
     ImGui::SameLine(0, 100);
     ForcePlot();
+    ImGui::Indent(50.f);
+    ImGui::Text("OBJECT ID: %d", OBJMG::objects[selected].GetID());
+    ImGui::Text("OBJECT MASS: %.2f", OBJMG::objects[selected].GetMass());
+    ImGui::Text("OBJECT ACC: %.4f", OBJMG::objects[selected].GetAcc()());
+    ImGui::Text("OBJECT VELOCITY: %.4f", OBJMG::objects[selected].GetVelocity()());
+    ImGui::SetCursorPos(ImVec2(475, 325));
+    if(ImGui::Button("DELETE", ImVec2(200, 50))){
+        OBJMG::Delete(selected);
+        selected = 0;
+    }
     ImGui::EndChild();
 }
 
@@ -147,7 +157,7 @@ void GUI::StopButton(){
 }
 
 void GUI::ClearButton(){
-    ImGui::SetCursorPos(ImVec2(475, 475));
+    ImGui::SetCursorPos(ImVec2(460, 900));
     if(ImGui::Button("CLEAR", ImVec2(200, 50))){
         OBJMG::objects.clear();
     }
@@ -175,13 +185,13 @@ void GUI::ObjectCreator(){
 void GUI::PositionPlot(){
     ImPlot::SetNextAxesLimits(0, 1000, 0, 1000, ImPlotCond_Always);
     if (ImPlot::BeginPlot("##POS_PLOT", ImVec2(300, 300))) { 
+        ImPlot::SetupAxis(ImAxis_Y1, "", ImPlotAxisFlags_Invert);
         ImPlot::PlotScatter("Positions", OBJMG::objects[selected].GetTraceX(), OBJMG::objects[selected].GetTraceY(), 64); 
         ImPlot::EndPlot(); 
     }
 }
 
 void GUI::ForcePlot(){
-    //ImPlot::SetNextAxesLimits(0, 16, 0, 100, ImPlotCond_Always);
     ImPlot::SetNextAxesToFit();
     if(ImPlot::BeginPlot("##FORCE_PLOT", ImVec2(300, 278))){
         ImPlot::SetupAxis(ImAxis_X1, NULL, ImPlotAxisFlags_NoDecorations);

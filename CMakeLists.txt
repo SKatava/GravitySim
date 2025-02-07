@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.31.1)
 set( CMAKE_CXX_COMPILER "C:/msys64/mingw64/bin/g++.exe" )
 set( CMAKE_C_COMPILER "C:/msys64/mingw64/bin/gcc.exe" )
 
-project(gravity)
+project(GravitySim)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
@@ -54,17 +54,17 @@ set(SOURCES
     src/GUI.cpp
 )
 
-add_executable(gravity WIN32 ${SOURCES} ${IMGUI_SOURCES} ${IMPLOT_SOURCES})
+add_executable(GravitySim WIN32 ${SOURCES} ${IMGUI_SOURCES} ${IMPLOT_SOURCES} resource.rc)
 
 add_subdirectory(${GLFW_DIR})
-target_link_libraries(gravity PRIVATE glfw)
+target_link_libraries(GravitySim PRIVATE glfw)
 
 add_library(glad STATIC ${GLAD_DIR}/glad.c)
 target_include_directories(glad PUBLIC ${GLAD_DIR}/include)
-target_link_libraries(gravity PRIVATE glad)
+target_link_libraries(GravitySim PRIVATE glad)
 
 find_package(OpenGL REQUIRED)
-target_link_libraries(gravity PRIVATE OpenGL::GL)
+target_link_libraries(GravitySim PRIVATE OpenGL::GL)
 
 target_include_directories(${PROJECT_NAME} PRIVATE 
     ${GLFW_DIR}/include 
