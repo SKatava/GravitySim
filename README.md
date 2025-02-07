@@ -32,7 +32,7 @@
     
 3. Run the simulation:
     ```bash
-    ./GravitySim
+    .\GravitySim
     ```
 
 ## Usage
