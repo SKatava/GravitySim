@@ -33,6 +33,6 @@ namespace GUI{
     void ForcePlot();
 
     void Delete();
-}
+};
 
 #endif

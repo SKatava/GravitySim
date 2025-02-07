@@ -39,6 +39,7 @@ void GUI::Draw(){
                                     ImGuiWindowFlags_NoTitleBar | 
                                     ImGuiWindowFlags_NoResize | 
                                     ImGuiWindowFlags_NoMove;
+
     ImGui::Begin("Main Window", NULL, window_flags);
     ImGui::SetWindowPos(ImVec2(1000.f, 0.f));
     ImGui::SetWindowSize(ImVec2(780.f, 1000.f));

@@ -33,6 +33,8 @@ set(IMPLOT_SOURCES
     ${IMPLOT_DIR}/implot_items.cpp
 )
 
+set(STB_DIR ${CMAKE_SOURCE_DIR}/lib/stb)
+
 set(SOURCES
     ${GLAD_DIR}/glad.c
     src/main.cpp
@@ -66,11 +68,15 @@ target_link_libraries(GravitySim PRIVATE glad)
 find_package(OpenGL REQUIRED)
 target_link_libraries(GravitySim PRIVATE OpenGL::GL)
 
+target_link_libraries(GravitySim PRIVATE glfw dwmapi)
+
+
 target_include_directories(${PROJECT_NAME} PRIVATE 
     ${GLFW_DIR}/include 
     ${GLAD_DIR}/include 
     ${IMGUI_DIR}
     ${IMGUI_DIR}/backends
     ${IMPLOT_DIR}
+    ${STB_DIR}
     include/
 )
