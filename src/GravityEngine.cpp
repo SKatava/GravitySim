@@ -1,5 +1,6 @@
 #include "GravityEngine.h"
 
+//Moves one step into simulation
 void GEN::Step(){
     CSL::Check();
     for(int i = 0; i < OBJMG::objects.size(); i++){

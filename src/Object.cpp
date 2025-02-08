@@ -1,5 +1,6 @@
 #include "Object.h"
 
+//Construct the object
 Object::Object(float mass, Vector2f pos, Vector3f color) : 
     m_mass(mass), m_pos(pos), m_acc(Vector2f(0.f, 0.f)), m_velocity(Vector2f(0.f, 0.f)), m_force(Vector2f(0.f, 0.f)), m_circle() {
     Vector2f GLpos(0.f, 0.f);
@@ -17,19 +18,23 @@ Object::Object(float mass, Vector2f pos, Vector3f color) :
     }
 }
 
+//Set initial velocity of the object
 void Object::SetInitialVelocity(Vector2f vel){
     m_velocity = vel;
 }
 
+//Change the force of the object
 void Object::SetForce(Vector2f force){
     m_force = force;
 }
 
+//Add force to object
 void Object::AddForce(Vector2f force){
     m_force.x += force.x;
     m_force.y += force.y;
 }
 
+//Update the object based on current values and time
 void Object::Update(){
     m_acc.x = m_force.x / m_mass;
     m_acc.y = m_force.y / m_mass;
@@ -48,6 +53,7 @@ void Object::Update(){
     UpdateTrace();
 }
 
+//Update trace
 void Object::UpdateTrace(){
     if(FRAME_COUNTER % 500 != 0){
         return;
@@ -61,6 +67,7 @@ void Object::UpdateTrace(){
     m_traceY[63] = m_pos.y;
 }
 
+//Add force to the history
 void Object::UpdateForceHistory(){
     if(FRAME_COUNTER % 500 != 0){
         return;
@@ -72,6 +79,7 @@ void Object::UpdateForceHistory(){
     m_forceHistory[15] = std::sqrt(m_force.x * m_force.x + m_force.y*m_force.y);
 }
 
+//Draw the object
 void Object::Draw(){
     Vector2f GLpos(0.f, 0.f);
     GLpos.x = (m_pos.x / 500.f) - 1.f;
@@ -80,6 +88,7 @@ void Object::Draw(){
     m_circle.Draw();
 } 
 
+//Delete the object
 void Object::Delete(){
     m_circle.Delete();
 }

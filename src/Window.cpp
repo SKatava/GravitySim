@@ -1,7 +1,7 @@
 #include "Window.h"
 #include <stb_image.h>
 
-
+//Get if system in Dark Mode
 bool Window::IsDarkModeEnabled(){
 	DWORD value;
     HKEY hKey;
@@ -16,6 +16,7 @@ bool Window::IsDarkModeEnabled(){
     return false; 
 }
 
+//Apply Dark mode if system in dark mode
 void Window::ApplyDarkTitleBar(GLFWwindow* window, bool enableDark){
 	HWND hwnd = glfwGetWin32Window(window);
     if (hwnd) {
@@ -24,6 +25,7 @@ void Window::ApplyDarkTitleBar(GLFWwindow* window, bool enableDark){
     }
 }
 
+//Create Icon image and apply it as icon for the App
 void Window::SetWindowIcon(GLFWwindow* window){
 	GLFWimage images[1];  
 
@@ -42,6 +44,7 @@ void Window::SetWindowIcon(GLFWwindow* window){
     }
 }
 
+//Initialization of the App window
 void Window::Initialize(){
     glfwInit();
 
@@ -76,6 +79,7 @@ void Window::Initialize(){
 	
 }
 
+//Drawing the window/Main loop
 void Window::Draw(){
     Shader shaderProgram("../shaders/default.vert", "../shaders/default.frag");
 	double lastTime = glfwGetTime();
@@ -121,6 +125,7 @@ void Window::Draw(){
     shaderProgram.Delete();
 }
 
+//Clean the trash from window
 void Window::Clean(){
 	GUI::Delete();
 	glfwDestroyWindow(window);

@@ -1,5 +1,6 @@
 #include "Line.h"
 
+//Construct the line
 Line::Line(Vector2f posA, Vector2f posB) : m_posA(posA), m_posB(posB), m_color(1.f, 1.f, 1.f) {
     m_VAO.Bind();
     m_VBO.Bind();
@@ -19,6 +20,7 @@ void Line::SetColor(float r, float g, float b){
     m_color.z = b;
 }
 
+//Update the line VBO(positions)
 void Line::Update(){
     m_VBO.Bind();
     GLfloat vertices[] = {
@@ -29,12 +31,14 @@ void Line::Update(){
     m_VBO.Unbind();
 }
 
+//Draw the line
 void Line::Draw(){
     m_VAO.Bind();
     glDrawArrays(GL_LINES, 0, 2);
     m_VAO.Unbind();
 }
 
+//Delete the line's VBO and VAO
 void Line::Delete(){
     m_VAO.Delete();
     m_VBO.Delete(); 

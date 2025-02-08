@@ -10,7 +10,7 @@ float GUI::new_velY = 0;
 
 float GUI::DT = deltaTime;
 
-
+//Initialize ImGui and ImPlot
 void GUI::Initialize(GLFWwindow* window){
     IMGUI_CHECKVERSION(); 
 	ImGui::CreateContext(); 
@@ -31,6 +31,7 @@ void GUI::Initialize(GLFWwindow* window){
    
 }
 
+//Create context and render data
 void GUI::Draw(){
     ImGui_ImplOpenGL3_NewFrame(); 
 	ImGui_ImplGlfw_NewFrame(); 
@@ -54,6 +55,7 @@ void GUI::Draw(){
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
 
+//Display info of the selected object
 void GUI::InfoGraphics(){
     ImGui::BeginChild("Objects Info", ImVec2(770, 425), true);
     PositionPlot();
@@ -72,6 +74,7 @@ void GUI::InfoGraphics(){
     ImGui::EndChild();
 }
 
+//Show list of all existing objects
 void GUI::ObjectList(){
     ImGui::BeginChild("Object List", ImVec2(770.f, 250.f), true);
     ImGui::BeginTable("Objects list", 6, ImGuiTableFlags_RowBg);
@@ -105,6 +108,7 @@ void GUI::ObjectList(){
     ImGui::EndChild();
 }
 
+//Show time info of the simulation
 void GUI::TimeInfo(){
     ImGui::BeginChild("Time Info", ImVec2(400, 175), true);
     ImGui::Text("RUNTIME: %.2f", RUNTIME);            
@@ -148,6 +152,7 @@ void GUI::TimeInfo(){
     ImGui::EndChild();
 }
 
+//Button for stopping simulation
 void GUI::StopButton(){
     if(STOP_SIM){
         if(ImGui::Button("RESUME", ImVec2(200, 50))){STOP_SIM = 0;};
@@ -157,6 +162,7 @@ void GUI::StopButton(){
     }
 }
 
+//Button for clearing all the objects from simulation(from the OBJMG)
 void GUI::ClearButton(){
     ImGui::SetCursorPos(ImVec2(460, 900));
     if(ImGui::Button("CLEAR", ImVec2(200, 50))){
@@ -164,6 +170,7 @@ void GUI::ClearButton(){
     }
 }
 
+//Creates the interface for user to create an object
 void GUI::ObjectCreator(){
     ImGui::BeginChild("Creation tool", ImVec2(360, 300), true);
     ImGui::InputInt("MASS", &new_mass, 0);
@@ -183,6 +190,7 @@ void GUI::ObjectCreator(){
     ImGui::EndChild();
 };
 
+//Creates Position Plot/Graph of seleted object
 void GUI::PositionPlot(){
     ImPlot::SetNextAxesLimits(0, 1000, 0, 1000, ImPlotCond_Always);
     if (ImPlot::BeginPlot("##POS_PLOT", ImVec2(300, 300))) { 
@@ -192,6 +200,7 @@ void GUI::PositionPlot(){
     }
 }
 
+//Creates the Force Plot/Graph of selected object
 void GUI::ForcePlot(){
     ImPlot::SetNextAxesToFit();
     if(ImPlot::BeginPlot("##FORCE_PLOT", ImVec2(300, 278))){
@@ -201,6 +210,7 @@ void GUI::ForcePlot(){
     }
 }
 
+//Cleant the ImGui and Implot
 void GUI::Delete(){
     ImGui_ImplOpenGL3_Shutdown(); 
 	ImGui_ImplGlfw_Shutdown(); 

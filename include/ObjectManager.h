@@ -10,15 +10,12 @@
 
 namespace OBJMG{
     extern std::vector<Object> objects;
-    extern std::vector<const char*> c_ObjectList;
-    extern std::vector<std::string> s_ObjectList;
 
     void AddObject(float mass, Vector2f pos, Vector3f color);
     void DrawObjects();
     void DeleteObjects();
     void Delete(int index);
     void UpdateObjects();
-    void UpdateObjectList();
 }
 
 

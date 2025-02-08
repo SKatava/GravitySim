@@ -1,5 +1,6 @@
 #include "../include/Background.h"
 
+//Create the background(stored in m_grid vector)
 void Background::SetUp(int width, int height){
     m_grid.clear();
     for(int i = 0; i < width/10; i++){
@@ -14,12 +15,14 @@ void Background::SetUp(int width, int height){
     }
 }
 
+//Draw the Background with the m_grid vector
 void Background::Draw(){
     for(int i = 0; i < m_grid.size(); i++){
         m_grid[i].Draw();
     }
 }
 
+//Delete the m_grid vector containing all data
 void Background::Delete(){
     for(int i = 0; i < m_grid.size(); i++){
         m_grid[i].Delete();

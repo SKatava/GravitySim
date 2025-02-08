@@ -1,5 +1,6 @@
 #include "Dot.h"
 
+
 Dot::Dot(Vector2f pos) : m_pos(pos){
     m_VAO.Bind();
     m_VBO.Bind();

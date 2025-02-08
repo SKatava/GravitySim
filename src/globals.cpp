@@ -1,5 +1,6 @@
 #include "globals.h"
 
+
 double deltaTime = 0.001;
 
 int WINDOW_WIDTH = 1780;

@@ -1,3 +1,4 @@
+//STB header is defined here because it needs to be defined only once
 #define STB_IMAGE_IMPLEMENTATION  
 #include "stb_image.h"
 

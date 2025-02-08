@@ -1,5 +1,6 @@
 #include "Circle.h"
 
+//Construct the circle
 Circle::Circle() : m_VAO(), m_VBO(), m_pos(0.f, 0.f), m_color(1.f, 1.f, 1.f){
     m_VAO.Bind();
     m_VBO.Bind();
@@ -19,6 +20,7 @@ void Circle::UpdatePos(Vector2f pos){
     Update();
 }
 
+//Update the circle's VBO(positions)
 void Circle::Update(){
     m_VBO.Bind();
     GLfloat vertices[216]; 
@@ -35,6 +37,7 @@ void Circle::Update(){
     m_VBO.Unbind();
 }
 
+//Draw the circle
 void Circle::Draw()
 {
     m_VAO.Bind();
@@ -42,6 +45,7 @@ void Circle::Draw()
     m_VAO.Unbind();
 }
 
+//Delete the circle's VBO and VAO
 void Circle::Delete()
 {
     m_VAO.Delete();

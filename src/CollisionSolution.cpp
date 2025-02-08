@@ -1,5 +1,6 @@
 #include "CollisionSolution.h"
 
+//Check for collision between every objet
 void CSL::Check(){
     int size = OBJMG::objects.size();
     for(int i = 0; i < size; i++){
@@ -33,6 +34,7 @@ void CSL::Check(){
     
 }
 
+//Solution for the emerging collision between two objects
 void CSL::Solution(float massA, float massB, Vector2f velA, Vector2f velB, Vector2f pos){
     float mass = massA + massB;
     float velX = (massA * velA.x + massB * velB.x) / mass;
