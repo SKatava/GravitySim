@@ -2,7 +2,7 @@
 
 //Construct the object
 Object::Object(float mass, Vector2f pos, Vector3f color) : 
-    m_mass(mass), m_pos(pos), m_acc(Vector2f(0.f, 0.f)), m_velocity(Vector2f(0.f, 0.f)), m_force(Vector2f(0.f, 0.f)), m_circle() {
+    m_mass(mass), m_pos(pos), m_acc(Vector2f(0.f, 0.f)), m_velocity(Vector2f(0.f, 0.f)), m_force(Vector2f(0.f, 0.f)), m_circle(), m_maxForce(0) {
     Vector2f GLpos(0.f, 0.f);
     GLpos.x = (m_pos.x / 500.f) - 1.f;
     GLpos.y = 1.f - (m_pos.y / 500.f);
@@ -77,6 +77,7 @@ void Object::UpdateForceHistory(){
         m_forceHistory[i - 1] = m_forceHistory[i]; 
     }
     m_forceHistory[15] = std::sqrt(m_force.x * m_force.x + m_force.y*m_force.y);
+    if(m_forceHistory[15] > m_maxForce) m_maxForce = m_forceHistory[15];
 }
 
 //Draw the object
@@ -126,4 +127,8 @@ float* Object::GetTraceY(){
 
 float* Object::GetForceHistory(){
     return m_forceHistory;
+}
+
+float Object::GetMaxForce(){
+    return m_maxForce;
 }

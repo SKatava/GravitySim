@@ -202,7 +202,8 @@ void GUI::PositionPlot(){
 
 //Creates the Force Plot/Graph of selected object
 void GUI::ForcePlot(){
-    ImPlot::SetNextAxesToFit();
+    //ImPlot::SetNextAxesToFit();
+    ImPlot::SetNextAxesLimits(0, 16, 0, OBJMG::objects[selected].GetMaxForce() * 2 + 1, ImPlotCond_Always);
     if(ImPlot::BeginPlot("##FORCE_PLOT", ImVec2(300, 278))){
         ImPlot::SetupAxis(ImAxis_X1, NULL, ImPlotAxisFlags_NoDecorations);
         ImPlot::PlotShaded("Force" , OBJMG::objects[selected].GetForceHistory(), 16);

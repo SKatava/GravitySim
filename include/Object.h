@@ -30,6 +30,7 @@ class Object{
     float* GetTraceX();
     float* GetTraceY();
     float* GetForceHistory();
+    float GetMaxForce();
 
     private:
     int m_ID;
@@ -39,6 +40,7 @@ class Object{
     Vector2f m_acc;
     Vector2f m_velocity;
     Circle m_circle;
+    float m_maxForce;
     float m_traceX[64];
     float m_traceY[64];
     float m_forceHistory[16];
