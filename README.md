@@ -10,7 +10,15 @@
 <img src="preview.png" width="800">
 </div>
 
-## Installation
+## Instalation for usage on Windows
+
+### Steps
+
+1. Install the installer uploaded at the release under the name GravitySim-installer
+2. Run the installer
+3. Finish the installation and enjoy the program
+
+## Installation for building on Windows(10, 11)
 
 ### Requirements:
 
@@ -36,6 +44,7 @@
     ```bash
     .\GravitySim
     ```
+
 
 ## Usage
 
