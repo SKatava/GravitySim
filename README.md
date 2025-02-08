@@ -1,5 +1,5 @@
 # GravitySim
-
+![[icon.png]]
 **GravitySim** is a simple gravity simulation project written in C++ with dependencies such as **GLFW**, **GLAD**, **ImGui**, and **Implot** for rendering and creating interactive plots.
 
 ## Features
