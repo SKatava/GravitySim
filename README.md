@@ -9,6 +9,7 @@
 <div align="center">
 <img src="preview.png" width="800">
 </div>
+
 ## Installation
 
 ### Requirements:
