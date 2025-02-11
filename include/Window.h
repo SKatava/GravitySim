@@ -24,6 +24,7 @@
 #include "Background.h"
 #include "GravityEngine.h"
 #include "GUI.h"
+#include "Arrow.h"
 
 
 

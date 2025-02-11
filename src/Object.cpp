@@ -2,12 +2,15 @@
 
 //Construct the object
 Object::Object(float mass, Vector2f pos, Vector3f color) : 
-    m_mass(mass), m_pos(pos), m_acc(Vector2f(0.f, 0.f)), m_velocity(Vector2f(0.f, 0.f)), m_force(Vector2f(0.f, 0.f)), m_circle(), m_maxForce(0) {
+    m_mass(mass), m_pos(pos), m_acc(Vector2f(0.f, 0.f)), m_velocity(Vector2f(0.f, 0.f)), m_force(Vector2f(0.f, 0.f)), m_circle(), m_maxForce(0),
+    m_arrowX(pos, pos), m_arrowY(pos, pos) {
     Vector2f GLpos(0.f, 0.f);
     GLpos.x = (m_pos.x / 500.f) - 1.f;
     GLpos.y = 1.f - (m_pos.y / 500.f);
     m_circle.SetColor(color);
     m_circle.UpdatePos(GLpos);
+    m_arrowX.SetColor(1.f, 0.f, 0.f);
+    m_arrowY.SetColor(0.f, 1.f, 0.f);
     m_ID = ID++;
     for(int i = 0; i < 64; i++){
         m_traceX[i] = -10;
@@ -46,11 +49,13 @@ void Object::Update(){
     m_pos.y += m_velocity.y * deltaTime;
 
     UpdateForceHistory();
-    
+    UpdateArrows();
+
     m_force.x = 0.f;
     m_force.y = 0.f;
     
     UpdateTrace();
+    
 }
 
 //Update trace
@@ -80,6 +85,16 @@ void Object::UpdateForceHistory(){
     if(m_forceHistory[15] > m_maxForce) m_maxForce = m_forceHistory[15];
 }
 
+//Update the arrows positions
+void Object::UpdateArrows(){
+    m_arrowX.SetStart(m_pos);
+    m_arrowX.SetEnd(Vector2f(m_pos.x + 100*(m_force.x/(m_force())), m_pos.y));
+    m_arrowY.SetStart(m_pos);
+    m_arrowY.SetEnd(Vector2f(m_pos.x, m_pos.y + 100*(m_force.y/m_force())));
+    m_arrowX.Update();
+    m_arrowY.Update();
+}
+
 //Draw the object
 void Object::Draw(){
     Vector2f GLpos(0.f, 0.f);
@@ -87,10 +102,14 @@ void Object::Draw(){
     GLpos.y = 1.f - (m_pos.y / 500.f);
     m_circle.UpdatePos(GLpos);
     m_circle.Draw();
+    m_arrowX.Draw();
+    m_arrowY.Draw();
 } 
 
 //Delete the object
 void Object::Delete(){
+    m_arrowX.Delete();
+    m_arrowY.Delete();
     m_circle.Delete();
 }
 

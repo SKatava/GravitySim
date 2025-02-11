@@ -7,6 +7,7 @@
 #include "Circle.h"
 #include "Vector2f.h"
 #include "Vector3f.h"
+#include "Arrow.h"
 
 
 class Object{
@@ -18,6 +19,7 @@ class Object{
     void Update();
     void UpdateTrace();
     void UpdateForceHistory();
+    void UpdateArrows();
     void Draw();
     void Delete();
 
@@ -40,6 +42,8 @@ class Object{
     Vector2f m_acc;
     Vector2f m_velocity;
     Circle m_circle;
+    Arrow m_arrowX;
+    Arrow m_arrowY;
     float m_maxForce;
     float m_traceX[64];
     float m_traceY[64];

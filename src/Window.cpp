@@ -118,11 +118,9 @@ void Window::Draw(){
 		if(!glfwGetWindowAttrib(window, GLFW_ICONIFIED)){
 			GUI::Draw();
 		}
-
         glfwSwapBuffers(window);
 	    glfwPollEvents();
     }
-	
 	bg.Delete();
 	OBJMG::DeleteObjects();
     shaderProgram.Delete();

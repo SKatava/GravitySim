@@ -54,6 +54,7 @@ set(SOURCES
     src/GravityEngine.cpp
     src/CollisionSolution.cpp
     src/GUI.cpp
+    src/Arrow.cpp
 )
 
 add_executable(GravitySim WIN32 ${SOURCES} ${IMGUI_SOURCES} ${IMPLOT_SOURCES} resource.rc)
