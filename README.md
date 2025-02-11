@@ -7,6 +7,9 @@
 - Use of 2D physics to visualize objects moving under gravitational influence.
 - Interactive plotting and visualization of object trajectories.
 
+<div align="center">
+<img src="preview.png" width="800">
+</div>
 
 ## Instalation for usage on Windows
 
