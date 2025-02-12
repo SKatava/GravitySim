@@ -51,3 +51,7 @@ void Circle::Delete()
     m_VAO.Delete();
     m_VBO.Delete();
 }
+
+Vector3f Circle::GetColor(){
+    return m_color;
+}

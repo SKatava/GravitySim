@@ -31,6 +31,10 @@ void Object::SetForce(Vector2f force){
     m_force = force;
 }
 
+void Object::SetColor(Vector3f color){
+    m_circle.SetColor(color);
+}
+
 //Add force to object
 void Object::AddForce(Vector2f force){
     m_force.x += force.x;
@@ -55,7 +59,6 @@ void Object::Update(){
     m_force.y = 0.f;
     
     UpdateTrace();
-    
 }
 
 //Update trace
@@ -150,4 +153,8 @@ float* Object::GetForceHistory(){
 
 float Object::GetMaxForce(){
     return m_maxForce;
+}
+
+Vector3f Object::GetColor(){
+    return m_circle.GetColor();
 }

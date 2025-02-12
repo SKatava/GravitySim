@@ -20,6 +20,7 @@ class Circle{
     void Update();
     void Draw();
     void Delete();
+    Vector3f GetColor();
 
     private:
     Vector2f m_pos;

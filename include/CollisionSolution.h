@@ -7,7 +7,7 @@
 
 namespace CSL{
     void Check();
-    void Solution(float massA, float massB, Vector2f velA, Vector2f velB, Vector2f pos);
-}
+    void Solution(float massA, float massB, Vector2f velA, Vector2f velB, Vector2f pos, Vector3f color);
+};
 
 #endif

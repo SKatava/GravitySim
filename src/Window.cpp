@@ -85,7 +85,12 @@ void Window::Draw(){
 	double lastTime = glfwGetTime();
 	double currentTime;
 
-	OBJMG::AddObject(100000, Vector2f(800.f, 500.f), Vector3f(1.f, 0.f, 0.f));	
+	//2-body scenario
+	/*OBJMG::AddObject(1, Vector2f(800.f, 500.f), Vector3f(1.f, 0.f, 0.f));
+	OBJMG::AddObject(1000000000, Vector2f(500.f, 500.f), Vector3f(1.f, 0.f, 0.f));	
+	OBJMG::objects[0].SetInitialVelocity(Vector2f(0.f, std::sqrt(0.000667430 * 1000000000 / 300)));*/
+	//3-body scenrario
+	OBJMG::AddObject(100000, Vector2f(800.f, 500.f), Vector3f(1.f, 0.f, 0.f));
 	OBJMG::AddObject(100000, Vector2f(200.f, 500.f), Vector3f(0.f, 1.f, 0.f));
 	OBJMG::AddObject(100000, Vector2f(500.f, 500.f), Vector3f(0.f, 0.f, 1.f));
 	OBJMG::objects[0].SetInitialVelocity(Vector2f(0.f, std::sqrt(0.000667430 * 100000 / 450)));

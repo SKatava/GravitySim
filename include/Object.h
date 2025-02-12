@@ -16,6 +16,7 @@ class Object{
     void SetInitialVelocity(Vector2f vel);
     void SetForce(Vector2f force);
     void AddForce(Vector2f force);
+    void SetColor(Vector3f color);
     void Update();
     void UpdateTrace();
     void UpdateForceHistory();
@@ -33,6 +34,7 @@ class Object{
     float* GetTraceY();
     float* GetForceHistory();
     float GetMaxForce();
+    Vector3f GetColor();
 
     private:
     int m_ID;
