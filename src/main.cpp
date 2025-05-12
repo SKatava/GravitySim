@@ -1,14 +1,7 @@
-//STB header is defined here because it needs to be defined only once
-#define STB_IMAGE_IMPLEMENTATION  
-#include "stb_image.h"
+#include "Application.h"
 
-
-#include "Window.h"
-
-int main(){
-    Window window;
-    window.Initialize();
-    window.Draw();
-    window.Clean();
+int main() {
+    Application App;
+    App.Run();
     return 0;
 }

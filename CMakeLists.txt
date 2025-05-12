@@ -10,8 +10,24 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 set(CMAKE_EXE_LINKER_FLAGS "-static")
 
-configure_file(${CMAKE_SOURCE_DIR}/shaders/default.vert ${CMAKE_BINARY_DIR}/shaders/default.vert COPYONLY)
-configure_file(${CMAKE_SOURCE_DIR}/shaders/default.frag ${CMAKE_BINARY_DIR}/shaders/default.frag COPYONLY)
+
+configure_file(${CMAKE_SOURCE_DIR}/assets/shaders/default.vert ${CMAKE_BINARY_DIR}/assets/shaders/default.vert COPYONLY)
+configure_file(${CMAKE_SOURCE_DIR}/assets/shaders/default.frag ${CMAKE_BINARY_DIR}/assets/shaders/default.frag COPYONLY)
+
+configure_file(${CMAKE_SOURCE_DIR}/assets/shaders/particle.vert ${CMAKE_BINARY_DIR}/assets/shaders/particle.vert COPYONLY)
+configure_file(${CMAKE_SOURCE_DIR}/assets/shaders/particle.frag ${CMAKE_BINARY_DIR}/assets/shaders/particle.frag COPYONLY)
+
+
+configure_file(${CMAKE_SOURCE_DIR}/assets/shaders/particleSSBO.vert ${CMAKE_BINARY_DIR}/assets/shaders/particleSSBO.vert COPYONLY)
+configure_file(${CMAKE_SOURCE_DIR}/assets/shaders/particleSSBO.frag ${CMAKE_BINARY_DIR}/assets/shaders/particleSSBO.frag COPYONLY)
+
+
+configure_file(${CMAKE_SOURCE_DIR}/assets/shaders/gravityDirectMethod.comp ${CMAKE_BINARY_DIR}/assets/shaders/gravityDirectMethod.comp COPYONLY)
+
+configure_file(${CMAKE_SOURCE_DIR}/assets/fonts/icon_font.otf ${CMAKE_BINARY_DIR}/assets/fonts/icon_font.otf COPYONLY)
+configure_file(${CMAKE_SOURCE_DIR}/assets/fonts/inter.ttf ${CMAKE_BINARY_DIR}/assets/fonts/inter.ttf COPYONLY)
+
+configure_file(${CMAKE_SOURCE_DIR}/assets/icons/icon.png ${CMAKE_BINARY_DIR}/assets/icons/icon.png COPYONLY)
 
 SET(GLAD_DIR "lib/glad")
 set(GLFW_DIR "lib/glfw")
@@ -35,29 +51,59 @@ set(IMPLOT_SOURCES
 
 set(STB_DIR ${CMAKE_SOURCE_DIR}/lib/stb)
 
-set(SOURCES
-    ${GLAD_DIR}/glad.c
-    src/main.cpp
-    src/VAO.cpp
-    src/VBO.cpp
-    src/Vector2f.cpp
-    src/shaderClass.cpp
-    src/Vector3f.cpp
-    src/Dot.cpp
-    src/Line.cpp
-    src/Window.cpp
-    src/Circle.cpp
-    src/Object.cpp
-    src/globals.cpp
-    src/ObjectManager.cpp
-    src/Background.cpp
-    src/GravityEngine.cpp
-    src/CollisionSolution.cpp
-    src/GUI.cpp
-    src/Arrow.cpp
+include_directories(
+    include/Compute
+    include/Core
+    include/Rendering
+    include/GUI
+    include/Entities
+    include/Events
+    include/Physics
+    include/DataTypes
+    lib/glad/include
+    lib/imgui
+    lib/imgui/backends
+    lib/implot
 )
 
-add_executable(GravitySim WIN32 ${SOURCES} ${IMGUI_SOURCES} ${IMPLOT_SOURCES} resource.rc)
+set(SOURCES
+    src/main.cpp
+
+    src/Core/Application.cpp
+    src/Core/Timer.cpp
+    src/Core/Settings.cpp
+    src/Core/Hardware.cpp
+
+    src/Rendering/Renderer.cpp    
+    src/Rendering/VAO.cpp    
+    src/Rendering/VBO.cpp    
+    src/Rendering/Circle.cpp
+    src/Rendering/Shader.cpp
+    src/Rendering/Line.cpp
+    src/Rendering/Background.cpp
+    src/Rendering/Dots.cpp
+
+    src/GUI/GUI.cpp
+
+    src/Entities/Entity.cpp
+    src/Entities/Entities.cpp
+
+    src/Events/Events.cpp
+
+    src/Physics/GravityEngine.cpp
+    src/Physics/PhysicsEngine.cpp
+
+    src/Compute/SSBO.cpp
+    src/Compute/ComputeShader.cpp
+    src/Compute/ComputeSystem.cpp
+
+    src/DataTypes/Vector2f.cpp
+    src/DataTypes/Vector3f.cpp
+
+    lib/glad/glad.c
+)
+
+add_executable(GravitySim WIN32 ${SOURCES} ${IMGUI_SOURCES} ${IMPLOT_SOURCES} assets/icons/resource.rc)
 
 add_subdirectory(${GLFW_DIR})
 target_link_libraries(GravitySim PRIVATE glfw)
@@ -81,3 +127,4 @@ target_include_directories(${PROJECT_NAME} PRIVATE
     ${STB_DIR}
     include/
 )
+

@@ -1,0 +1,95 @@
+#version 430
+
+#define G 6.67430e-11
+#define MAX_STACK_SIZE 128 
+
+struct EntityData {
+    float posX;
+    float posY;
+    float velX;
+    float velY;
+    float forceX;
+    float forceY;
+    float mass;
+    float padding; // 32 bytes
+};
+
+struct Node {
+    float centerX;
+    float centerY;
+    float size;
+    float cmX;
+    float cmY;
+    float totalMass;
+    int children[4];
+    int entityIndex; // -1 if internal node
+    int padding; // 48 bytes
+};
+
+layout(std430, binding = 0) buffer Bodies {
+    EntityData entities[];
+};
+
+layout(std430, binding = 1) buffer Tree {
+    Node tree[];
+};
+
+layout (local_size_x = 128) in;  // Increased work group size
+
+uniform float deltaTime;
+
+void main() {
+    uint i = gl_GlobalInvocationID.x;
+    if (i >= entities.length()) return;
+
+    EntityData self = entities[i];
+    float myX = self.posX;
+    float myY = self.posY;
+    float myMass = self.mass;
+
+    float forceX = 0.0;
+    float forceY = 0.0;
+
+    int stack[MAX_STACK_SIZE];
+    int stackTop = 0;
+
+    stack[stackTop++] = 0;
+
+    while (stackTop > 0) {
+        int current = stack[--stackTop];
+        Node node = tree[current];
+
+        if (node.entityIndex == int(i)) continue;
+
+        float dx = node.cmX - myX;
+        float dy = node.cmY - myY;
+        float distSqr = dx * dx + dy * dy;
+
+        if (distSqr < 1e-10) continue;
+
+        float dist = sqrt(distSqr);
+        float s = node.size;
+
+        float theta = 0.75; // Increased theta for better performance
+        if ((s / dist) < theta || node.children[0] == -1) {
+            float f = G * myMass * node.totalMass / distSqr;
+            forceX += f * dx / dist;
+            forceY += f * dy / dist;
+        } else {
+            for (int c = 0; c < 4; ++c) {
+                int child = node.children[c];
+                if (child != -1 && stackTop < MAX_STACK_SIZE) {
+                    stack[stackTop++] = child;
+                }
+            }
+        }
+    }
+
+    self.velX += deltaTime * forceX / myMass;
+    self.velY += deltaTime * forceY / myMass;
+
+    self.posX += deltaTime * self.velX;
+    self.posY += deltaTime * self.velY;
+
+    entities[i] = self;
+}

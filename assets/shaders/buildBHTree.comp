@@ -1,0 +1,144 @@
+#version 430
+
+#define MAX_NODES 262144   // dovoljno za 100k entiteta u worst-case
+#define ROOT_INDEX 0
+
+struct EntityData {
+    float posX;
+    float posY;
+    float velX;
+    float velY;
+    float forceX;
+    float forceY;
+    float mass;
+    float padding;
+};
+
+struct Node {
+    float centerX;
+    float centerY;
+    float size;
+    float cmX;
+    float cmY;
+    float totalMass;
+    int children[4];   // -1 ako nema djeteta
+    int entityIndex;   // -1 ako nije leaf
+    int padding;
+};
+
+layout(std430, binding = 0) buffer Bodies {
+    EntityData entities[];
+};
+
+layout(std430, binding = 1) buffer Tree {
+    Node nodes[];
+};
+
+layout(std430, binding = 2) buffer NodeCounter {
+    int nodeCount;
+};
+
+layout (local_size_x = 64) in;
+
+uniform float deltaTime;
+uniform float rootCenterX;
+uniform float rootCenterY;
+uniform float rootSize;
+
+bool pointInBounds(float x, float y, float cx, float cy, float size) {
+    return abs(x - cx) <= size * 0.5 && abs(y - cy) <= size * 0.5;
+}
+
+int getQuadrant(float px, float py, float cx, float cy) {
+    int quad = 0;
+    if (py < cy) quad += 2;
+    if (px >= cx) quad += 1;
+    return quad; // 0: SW, 1: SE, 2: NW, 3: NE
+}
+
+void main() {
+    uint i = gl_GlobalInvocationID.x;
+    if (gl_GlobalInvocationID.x == 0) {
+        nodes[0].centerX = rootCenterX;
+        nodes[0].centerY = rootCenterY;
+        nodes[0].size = rootSize;
+        nodes[0].cmX = 0.0;
+        nodes[0].cmY = 0.0;
+        nodes[0].totalMass = 0.0;
+        nodes[0].entityIndex = -1;
+        for (int i = 0; i < 4; ++i)
+            nodes[0].children[i] = -1;
+    }
+    if (i >= entities.length()) return;
+
+    EntityData e = entities[i];
+    float x = e.posX;
+    float y = e.posY;
+
+    int current = ROOT_INDEX;
+
+    while (true) {
+        Node node = nodes[current];
+
+        // Ako je leaf i prazan: umetni direktno
+        if (node.entityIndex == -1 && node.children[0] == -1) {
+            // Atomically reserve this spot if empty
+            int expected = -1;
+            if (atomicCompSwap(nodes[current].entityIndex, expected, int(i)) == expected) {
+                nodes[current].totalMass += e.mass;
+                nodes[current].cmX += e.mass * x;
+                nodes[current].cmY += e.mass * y;
+                break;
+            }
+        }
+
+        // Ako već postoji entitet: podijeli čvor
+        if (node.entityIndex != -1) {
+            int existingEntity = node.entityIndex;
+
+            // Clear entityIndex (pretvaramo u unutarnji čvor)
+            nodes[current].entityIndex = -1;
+
+            for (int q = 0; q < 4; ++q) {
+                nodes[current].children[q] = -1;
+            }
+
+            // Umetni stari entitet
+            EntityData old = entities[existingEntity];
+            int oldQuad = getQuadrant(old.posX, old.posY, node.centerX, node.centerY);
+
+            // Alociraj novi čvor
+            int childIndex = atomicAdd(nodeCount, 1);
+            float offset = node.size / 4.0;
+            float newSize = node.size / 2.0;
+
+            float cx = node.centerX + ((oldQuad & 1) != 0 ? offset : -offset);
+            float cy = node.centerY + ((oldQuad & 2) != 0 ? -offset : offset);
+
+            nodes[childIndex] = Node(cx, cy, newSize, 0, 0, 0, int[](-1, -1, -1, -1), existingEntity, 0);
+            nodes[current].children[oldQuad] = childIndex;
+        }
+
+        // Navigiraj u odgovarajući kvadrant
+        int quad = getQuadrant(x, y, node.centerX, node.centerY);
+        int child = atomicCompSwap(nodes[current].children[quad], -1, atomicAdd(nodeCount, 1));
+
+        if (child == -1) {
+            // novi child upravo alociran
+            int newIdx = nodes[current].children[quad];
+            float offset = node.size / 4.0;
+            float newSize = node.size / 2.0;
+            float cx = node.centerX + ((quad & 1) != 0 ? offset : -offset);
+            float cy = node.centerY + ((quad & 2) != 0 ? -offset : offset);
+            nodes[newIdx] = Node(cx, cy, newSize, 0, 0, 0, int[](-1, -1, -1, -1), -1, 0);
+            current = newIdx;
+        } else {
+            current = nodes[current].children[quad];
+        }
+
+        // akumuliraj masu i centar mase (u gornjem čvoru)
+        nodes[current].totalMass += e.mass;
+        nodes[current].cmX += e.mass * x;
+        nodes[current].cmY += e.mass * y;
+    }
+}

@@ -1,0 +1,57 @@
+#version 430
+
+#define G 6.67430e-11
+
+struct EntityData {
+    float posX;
+    float posY;
+    float velX;
+    float velY;
+    float forceX;
+    float forceY;
+    float mass;
+    float padding; 
+};
+
+layout(std430, binding = 0) buffer Bodies {
+    EntityData entities[];
+};
+
+layout (local_size_x = 64) in;  
+
+uniform float deltaTime;
+
+void main() {
+    uint i = gl_GlobalInvocationID.x;
+    if (i >= entities.length()) return;  
+
+    float forceX = 0.0;
+    float forceY = 0.0;
+    float posX = entities[i].posX;
+    float posY = entities[i].posY;
+    float mass = entities[i].mass;
+
+    for (uint j = 0; j < entities.length(); j++) {
+        if(i == j) continue;
+
+        float dx = entities[j].posX - posX;
+        float dy = entities[j].posY - posY;
+        float distSqr = dx * dx + dy * dy;
+
+        if(distSqr == 0.0) continue;
+
+        float dist = sqrt(distSqr);
+        float f = float(G) * mass * entities[j].mass / distSqr;
+
+        forceX += f * dx / dist;
+        forceY += f * dy / dist;
+    }
+    
+    entities[i].velX += deltaTime * forceX / mass;
+    entities[i].velY += deltaTime * forceY / mass;
+
+    entities[i].posX += deltaTime * entities[i].velX;
+    entities[i].posY += deltaTime * entities[i].velY;
+}
+
+
