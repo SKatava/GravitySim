@@ -32,7 +32,7 @@ To fasten up the computer to do more calclulation quite a bit I added a multithr
 
 ### Ultra Perfomance Mode
 
-The last step of imporving the speed and perfomance of simulation was to paralize the proccess even more, and to do so I added GLSL shader for calculation of gravity force as well as updating the entities positions. GLSL shader is a script writen in similar syntax as c++ that gives direct orders to GPU, and that is great because GPU often has hundreds, even thousands of cores that can calculate in paralel. With that my PC was able to get 50 000 objects at around 15-20 FPS, which is good considering GPU had around 780 cores, while there are many much stronger GPU's that can realy show some high perfomance. 
+The last step of imporving the speed and perfomance of simulation was to paralize the proccess even more, and to do so I added GLSL shader for calculation of gravity force as well as updating the entities positions. GLSL shader is a script writen in similar syntax as c++ that gives direct orders to GPU, and that is great because GPU often has hundreds, even thousands of cores that can calculate in paralel. With that my PC was able to get 50 000 objects at around 15-20 FPS, which is good considering GPU had has around 780 cores, while there are many much stronger GPU's that can realy show some high perfomance. 
 
 ### UI
 
