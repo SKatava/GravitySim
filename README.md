@@ -24,7 +24,7 @@ $$
 
 The algorithm for calucating this equation is normaly of $O(n^2)$ complexity, but in this program, when calculating force, entities are not treated as individuals, but rather as conections, that is possible because the formula returns the same value on both ends, so two entities can be done at once, with that complexity drops to $O(\frac{n^2}{2})$, and when the entities that are already done with calculaion are excluded we get the final complexity of $O(\frac{n(n-1)}{2})$.
 
-With that said, just that can only handle around 1000 objects at resonable FPS on decent computers. Two increase the power there are two more options(High and Ultra).
+With that said, just that can only handle around 1000 objects at resonable FPS on decent computers. To increase the power there are two more options(High and Ultra).
 
 ### High Perfomance Mode
 
